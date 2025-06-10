@@ -10,7 +10,6 @@ import study.data_jpa.entity.Member;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -22,6 +21,8 @@ class MemberRepositoryTest {
 
     @Test
     public void testMember() {
+        System.out.println("memberRepository:: " + memberRepository.getClass());
+
         Member member = new Member("memberA");
         Member savedMember = memberRepository.save(member);
 
