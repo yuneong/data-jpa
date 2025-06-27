@@ -190,6 +190,9 @@ class MemberRepositoryTest {
         // when
         Page<Member> page = memberRepository.findByAge(age, pageRequest);
 
+        // 반환시에 Member 객체로 하면 안되기 때문에 map을 사용해서 dto로 변환 후 리턴 필수!
+        Page<MemberDto> toMap = page.map(m -> new MemberDto(m.getId(), m.getUsername(), null));
+
         // then
         List<Member> content = page.getContent();
         long totalElements = page.getTotalElements(); // = totalCount

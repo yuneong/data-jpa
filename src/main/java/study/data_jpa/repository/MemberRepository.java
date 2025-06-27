@@ -41,9 +41,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Member findMemberByUsername(String username); // 단건
     Optional<Member> findOptionalByUsername(String username); // 단건 Optional
 
-    // left join 할 때 조인 조건이 카운트 쿼리에도 적용되어 성능 이슈 발생 -> 아래처럼 value(contents)와 countQuery 분리
-    @Query(value = "select m from Member m left join m.team t",
-            countQuery = "select count(m) from Member m")
     Page<Member> findByAge(int age, Pageable pageable);
     Slice<Member> findSliceByAge(int age, Pageable pageable);
 }
