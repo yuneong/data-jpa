@@ -114,7 +114,7 @@ class MemberRepositoryTest {
     }
 
     @Test
-    public void findUsernameList () {
+    public void findUsernameList() {
         Member m1 = new Member("AAA", 10);
         Member m2 = new Member("BBB", 20);
         memberRepository.save(m1);
@@ -127,7 +127,7 @@ class MemberRepositoryTest {
     }
 
     @Test
-    public void findMemberDto () {
+    public void findMemberDto() {
         Team team = new Team("teamA");
         teamRepository.save(team);
 
@@ -142,7 +142,7 @@ class MemberRepositoryTest {
     }
 
     @Test
-    public void findByNames () {
+    public void findByNames() {
         Member m1 = new Member("AAA", 10);
         Member m2 = new Member("BBB", 20);
         memberRepository.save(m1);
@@ -152,5 +152,22 @@ class MemberRepositoryTest {
         for (Member member : MemberList) {
             System.out.println("member = " + member);
         }
+    }
+
+    @Test
+    public void returnType() {
+        Member m1 = new Member("AAA", 10);
+        Member m2 = new Member("BBB", 20);
+        memberRepository.save(m1);
+        memberRepository.save(m2);
+
+        List<Member> findList = memberRepository.findListByUsername("AAA");
+        System.out.println(findList);
+
+        Member findMember = memberRepository.findMemberByUsername("AAA");
+        System.out.println(findMember);
+
+        Optional<Member> findOptional = memberRepository.findOptionalByUsername("AAA");
+        System.out.println(findOptional);
     }
 }
