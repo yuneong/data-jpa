@@ -8,6 +8,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create
+#      ddl-auto: create-drop
     properties:
       hibernate:
         # show_sql: true -> sql문 보여주는거 대신 로그파일에 찍는것이 더 나음

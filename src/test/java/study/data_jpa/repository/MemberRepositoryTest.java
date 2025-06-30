@@ -3,6 +3,7 @@ package study.data_jpa.repository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -35,6 +36,10 @@ class MemberRepositoryTest {
     @PersistenceContext
     EntityManager em;
 
+    @BeforeEach
+    void clean() {
+        memberRepository.deleteAll(); // 각 테스트 실행 전에 데이터 삭제
+    }
 
     @Test
     public void testMember() {
@@ -298,13 +303,11 @@ class MemberRepositoryTest {
 //        List<Member> members = memberRepository.findMemberEntityGraph();
         List<Member> members = memberRepository.findEntityGraphByUsername("member2");
 
+        // then
         for (Member member : members) {
             System.out.println("@ member = " + member.getUsername());
             System.out.println("@@ member.teamClass = " + member.getTeam().getClass());
             System.out.println("@@@ member.team = " + member.getTeam().getName()); // select Team
         }
-
-        // then
-
     }
 }
