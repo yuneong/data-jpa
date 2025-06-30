@@ -1,5 +1,7 @@
 package study.data_jpa.repository;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,9 @@ class MemberRepositoryTest {
 
     @Autowired
     TeamRepository teamRepository;
+    
+    @PersistenceContext
+    EntityManager em;
 
 
     @Test
@@ -236,5 +241,30 @@ class MemberRepositoryTest {
 //        Assertions.assertThat(page.getTotalPages()).isEqualTo(2);
         Assertions.assertThat(page.isFirst()).isTrue();
         Assertions.assertThat(page.hasNext()).isTrue();
+    }
+
+    @Test
+    public void bulkUpdate() {
+        // given
+        memberRepository.save(new Member("member1", 10));
+        memberRepository.save(new Member("member2", 19));
+        memberRepository.save(new Member("member3", 20));
+        memberRepository.save(new Member("member4", 21));
+        memberRepository.save(new Member("member5", 40));
+
+        // when
+        int resultCount = memberRepository.bulkAgePlus(20);
+        // persistenceContext 문제로 인해 아래 두 줄 사용함
+//        em.flush();
+//        em.clear(); // @Modifying(clearAutomatically = true)로 대신 사용 가능
+
+        // db 에는 age=41 이지만 persistenceContext 에는 age=40으로 되어있음
+        // jpa bulk 연산시 위와 같은 persistenceContext 문제 발생
+        List<Member> memberList = memberRepository.findByUsername("member5");
+        Member member5 = memberList.get(0);
+        System.out.println("member5 = " + member5);
+
+        // then
+        Assertions.assertThat(resultCount).isEqualTo(3);
     }
 }
