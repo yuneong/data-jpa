@@ -276,24 +276,32 @@ class MemberRepositoryTest {
 
         Team teamA = new Team("teamA");
         Team teamB = new Team("teamB");
+        Team teamC = new Team("teamC");
         teamRepository.save(teamA);
         teamRepository.save(teamB);
+        teamRepository.save(teamC);
 
         Member member1 = new Member("member1", 10, teamA);
         Member member2 = new Member("member2", 10, teamB);
+        Member member3 = new Member("member2", 10, teamC);
         memberRepository.save(member1);
         memberRepository.save(member2);
+        memberRepository.save(member3);
 
         em.flush();
         em.clear();
 
         // when (N + 1 문제)
         // select Member 1
-        List<Member> members = memberRepository.findAll();// select Member
+//        List<Member> members = memberRepository.findAll(); // select Member
+//        List<Member> members = memberRepository.findMemberFetchJoin(); // N+1 문제를 해결하는 fetch join -> 연관된 테이블을 한번에 가져옴
+//        List<Member> members = memberRepository.findMemberEntityGraph();
+        List<Member> members = memberRepository.findEntityGraphByUsername("member2");
+
         for (Member member : members) {
-            System.out.println("member = " + member.getUsername());
-            System.out.println("member.teamClass = " + member.getTeam().getClass());
-            System.out.println("member.team = " + member.getTeam().getName()); // select Team
+            System.out.println("@ member = " + member.getUsername());
+            System.out.println("@@ member.teamClass = " + member.getTeam().getClass());
+            System.out.println("@@@ member.team = " + member.getTeam().getName()); // select Team
         }
 
         // then
