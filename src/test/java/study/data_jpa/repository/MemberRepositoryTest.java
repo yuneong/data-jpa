@@ -36,6 +36,9 @@ class MemberRepositoryTest {
     @PersistenceContext
     EntityManager em;
 
+    @Autowired
+    MemberQueryRepository memberQueryRepository;
+
     @BeforeEach
     void clean() {
         memberRepository.deleteAll(); // 각 테스트 실행 전에 데이터 삭제
@@ -339,5 +342,11 @@ class MemberRepositoryTest {
 
         // when
         List<Member> result = memberRepository.findLockByUsername("member1"); // select for update
+    }
+
+    @Test
+    public void callCustom() {
+//        List<Member> result = memberRepository.findMemberCustom();
+        List<Member> result = memberQueryRepository.findAllMembers();
     }
 }
