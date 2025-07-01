@@ -14,6 +14,13 @@ spring:
         # show_sql: true -> sql문 보여주는거 대신 로그파일에 찍는것이 더 나음
         format_sql: true
 
+  data:
+    web:
+      pageable:
+        default-page-size: 10
+        max-page-size: 2000
+#        one-indexed-parameters: true -> page index = 1 부터 시작
+
 logging.level:
   org.hibernate.SQL: debug
   # org.hibernate.type: trace -> 파라미터값까지 포함하여 로그 찍음
