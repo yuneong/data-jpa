@@ -417,11 +417,11 @@ class MemberRepositoryTest {
         em.clear();
 
         // when
-        List<UsernameOnly> result = memberRepository.findProjectionsByUsername("member1");
+        List<UsernameOnlyDto> result = memberRepository.findProjectionsByUsername("member1");
 
         // then
-        for (UsernameOnly usernameOnly : result) {
-            System.out.println("usernameOnly = " + usernameOnly.getUsername());
+        for (UsernameOnlyDto dto : result) {
+            System.out.println("usernameOnly = " + dto.getUsername());
         }
     }
 
