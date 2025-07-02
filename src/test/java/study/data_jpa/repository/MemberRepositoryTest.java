@@ -366,6 +366,7 @@ class MemberRepositoryTest {
         Specification<Member> spec = MemberSpec.username("member1").and(MemberSpec.teamName("teamA"));
         List<Member> result = memberRepository.findAll(spec);
 
+        // then
         Assertions.assertThat(result.size()).isEqualTo(1);
         Assertions.assertThat(result.get(0).getUsername()).isEqualTo("member1");
     }
@@ -385,8 +386,10 @@ class MemberRepositoryTest {
         em.clear();
 
         // when
-        // Probe
+        // Probe 생성
         Member member = new Member("member1");
+        Team team = new Team("teamA"); // inner join 가능
+        member.setTeam(team);
 
         ExampleMatcher matcher = ExampleMatcher.matching()
                 .withIgnorePaths("age"); // age에 대해서는 무시하고 조건으로 사용하지 말라는 조건
@@ -395,6 +398,7 @@ class MemberRepositoryTest {
 
         List<Member> result = memberRepository.findAll(example);
 
+        // then
         Assertions.assertThat(result.get(0).getUsername()).isEqualTo("member1");
     }
 
