@@ -7,10 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Slice;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
@@ -370,6 +367,34 @@ class MemberRepositoryTest {
         List<Member> result = memberRepository.findAll(spec);
 
         Assertions.assertThat(result.size()).isEqualTo(1);
+        Assertions.assertThat(result.get(0).getUsername()).isEqualTo("member1");
+    }
+
+    @Test
+    void queryByExample() {
+        // given
+        Team teamA = new Team("teamA");
+        em.persist(teamA);
+
+        Member member1 = new Member("member1", 10, teamA);
+        Member member2 = new Member("member2", 10, teamA);
+        em.persist(member1);
+        em.persist(member2);
+
+        em.flush();
+        em.clear();
+
+        // when
+        // Probe
+        Member member = new Member("member1");
+
+        ExampleMatcher matcher = ExampleMatcher.matching()
+                .withIgnorePaths("age"); // age에 대해서는 무시하고 조건으로 사용하지 말라는 조건
+
+        Example<Member> example = Example.of(member, matcher);
+
+        List<Member> result = memberRepository.findAll(example);
+
         Assertions.assertThat(result.get(0).getUsername()).isEqualTo("member1");
     }
 
