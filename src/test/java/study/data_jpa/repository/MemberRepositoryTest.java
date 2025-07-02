@@ -417,7 +417,7 @@ class MemberRepositoryTest {
         em.clear();
 
         // when
-        List<UsernameOnlyDto> result = memberRepository.findProjectionsByUsername("member1");
+        List<UsernameOnlyDto> result = memberRepository.findProjectionsByUsername("member1", UsernameOnlyDto.class);
 
         // then
         for (UsernameOnlyDto dto : result) {
